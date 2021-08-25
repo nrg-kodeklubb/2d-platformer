@@ -4,14 +4,12 @@ from pygame.locals import *
 import pygame as pg
 
 class GameManager():
-    def __init__(self, layouts, player, enemies, platforms, projectiles, screenOffSet = [0, 0], currentLayout=0):
+    def __init__(self, layouts, player, levels, currentLevel, currentLayout=0):
         self.layouts = layouts
         self.currentLayout = currentLayout
         self.player = player
-        self.enemies = enemies
-        self.platforms = platforms
-        self.projectiles = projectiles
-        self.screenoffSet = screenOffSet
+        self.levels = levels
+        self.currentLevel = currentLevel
 
     def __repr__(self):
         return
@@ -36,3 +34,4 @@ class GameManager():
     def update(self):
         #Runs all update methods
         pass
+
