@@ -11,7 +11,7 @@ def calcGravity(velocity, isOnGround):
     pass
 
 class Entity():
-    def __init__(self, sprite, size, center, surface, gravity=True, collision=True):
+    def __init__(self, sprite, size, center, gravity=True, collision=True):
         self.velocity = [0, 0]
         self.sprite = sprite
         self.size = size
