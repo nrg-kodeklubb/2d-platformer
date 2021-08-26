@@ -10,17 +10,18 @@ class GameManager():
         self.player = player
         self.levels = levels
         self.currentLevel = currentLevel
+        self.keys = []
 
     def __repr__(self):
         return
 
     def keydown(self, key):
-        #Called when player has pressed a key: there will be a lot to do here...
-        pass
+        if not key in self.keys:
+            self.keys += [key]
 
     def keyup(self, key):
-        # --||--
-        pass
+        if key in self.keys:
+            self.keys.remove(key)
 
     def mouseButtonDown(self, button):
         x, y = pg.mouse.get_pos()
