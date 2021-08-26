@@ -1,23 +1,23 @@
 #The base entity class, uppon which all other entities will be based
 import pygame as pg
 
+def setAngle(sprite, angle):
+    pass
+
 def loadSprite(path, size, flip, angle):
     pass
 
-def blitSprite(sprite, surface, rect, angle):
-    pass
-
-def calcGravity():
+def calcGravity(velocity, isOnGround):
     pass
 
 class Entity():
-    def __init__(self, sprite, size, center, surface, gravity=True):
+    def __init__(self, sprite, size, center, surface, gravity=True, collision=True):
         self.velocity = [0, 0]
         self.sprite = sprite
         self.size = size
         self.center = center
         self.gravity = gravity
-        self.surface = surface
+        self.collision = collision
         self.updateRect()
 
     def __repr__(self):
@@ -31,7 +31,7 @@ class Entity():
         #Apply gravity + check collisions
         pass
 
-    def draw(self, offset):
+    def draw(self, offset, screen):
         #Draw the entity (remember angle + offset)
         pass
 
