@@ -25,8 +25,7 @@ class GameManager():
 
     def mouseButtonDown(self, button):
         x, y = pg.mouse.get_pos()
-        #Called when player presses a button down
-        pass
+        self.layouts[self.currentLayout].collide((x, y))
 
     def draw(self):
         #Has to draw everything here
