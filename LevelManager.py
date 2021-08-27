@@ -2,7 +2,25 @@
 import pygame as pg
 
 def loadLevel(path):
-    pass
+    file = open(path, 'r')
+    lines = file.readlines()
+
+    tiles = []
+    entities = []
+
+    for y in range(len(lines)):
+        line = lines[y]
+
+        line = line.replace('\n', '')
+
+        # THIS LOOKS UNNECESSARY (there are easier ways to implement this), BUT IT HAS TO BE WRITTEN THIS WAY FOR LATER USE
+        tile_row = [0] * len(line)
+        for x in range(len(line)):
+            tile_row[x] = int(line[x])
+
+        tiles.append(tile_row)
+    
+    return Level(tiles, entities)
 
 block_size = 16
 class Level():
