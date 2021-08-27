@@ -10,11 +10,14 @@ class Level():
         self.tiles = tiles
         self.entities = entities
 
-        self.width = len(self.tiles)
-        self.height = len(self.tiles[0])
+    def width(self):
+        return len(self.tiles[0])
+    
+    def height(self):
+        return len(self.tiles)
 
     def draw(self, screen):
-        for y in range(len(self.tiles)):
-            for x in range(len(self.tiles[0])):
+        for y in range(self.height()):
+            for x in range(self.width()):
                 if self.tiles[y][x] == 1:
                     pg.draw.rect(screen, (255, 255, 255), (x*block_size, y*block_size, block_size, block_size))
