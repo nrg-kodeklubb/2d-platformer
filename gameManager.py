@@ -27,9 +27,9 @@ class GameManager():
         x, y = pg.mouse.get_pos()
         self.layouts[self.currentLayout].collide((x, y))
 
-    def draw(self):
+    def draw(self, screen):
         #Has to draw everything here
-        self.levels[self.currentLevel].draw()
+        self.levels[self.currentLevel].draw(screen)
         #self.player.draw()
         #self.layouts[self.currentLayout].draw()
 

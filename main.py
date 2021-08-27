@@ -1,18 +1,20 @@
 from pysimpleGUI import *
 from gameManager import *
+from LevelManager import *
 import sys
 import pygame as pg
 from pygame.locals import *
 
-WINDOWWIDTH = 1500
-WINDOWHEIGHT = 800
+WINDOWWIDTH = 1250
+WINDOWHEIGHT = 680
 
 WS = pg.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
 pg.display.set_caption('2D platformer')
 
 #Here we need to load a level
-GM = GameManager([], None, [], 0)
+level1 = loadLevel('levels/level1.txt')
+GM = GameManager([], None, [level1], 0)
 
 FPS = 30
 
@@ -33,6 +35,6 @@ while True:
     GM.update()
 
     WS.fill(WHITE)
-    GM.draw()
+    GM.draw(WS)
     pg.display.update()
     clock.tick(FPS)
