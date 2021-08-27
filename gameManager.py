@@ -4,7 +4,7 @@ from pygame.locals import *
 import pygame as pg
 
 class GameManager():
-    def __init__(self, layouts, player, levels, currentLevel, currentLayout=0):
+    def __init__(self, layouts, player, levels, currentLevel=0, currentLayout=0):
         self.layouts = layouts
         self.currentLayout = currentLayout
         self.player = player
@@ -29,7 +29,9 @@ class GameManager():
 
     def draw(self):
         #Has to draw everything here
-        pass
+        self.levels[self.currentLevel].draw()
+        #self.player.draw()
+        #self.layouts[self.currentLayout].draw()
 
     def update(self):
         #Runs all update methods
