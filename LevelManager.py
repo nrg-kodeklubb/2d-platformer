@@ -6,9 +6,9 @@ def loadLevel(path):
 
 block_size = 16
 class Level():
-    def __init__(self, tiles, enemies):
+    def __init__(self, tiles, entities):
         self.tiles = tiles
-        self.enemies = enemies
+        self.entities = entities
 
         self.width = len(self.tiles)
         self.height = len(self.tiles[0])
