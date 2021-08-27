@@ -38,4 +38,4 @@ class Level():
         for y in range(self.height()):
             for x in range(self.width()):
                 if self.tiles[y][x] == 1:
-                    pg.draw.rect(screen, (255, 255, 255), (x*block_size, y*block_size, block_size, block_size))
+                    pg.draw.rect(screen, (0, 255, 0), (x*block_size, y*block_size, block_size, block_size))
