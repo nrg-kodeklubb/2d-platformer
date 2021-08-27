@@ -2,6 +2,8 @@
 import pygame as pg
 import numpy as np
 
+terminalVelocity = 10
+
 def loadSprite(path, size=None, flip=[None, None]):
     image = pg.image.load(path + '.png')
 
@@ -23,8 +25,11 @@ def blitRotImg(image, rect, surface, offset=[0, 0], angle=0):
 
     surface.blit(rot_sprite, rect)
 
-def calcGravity(velocity, isOnGround):
-    pass
+def applyGravity(velocity, isOnGround):
+    if not isOnGround and terminalVelocity < 10: #Terminal velocity
+        velocity[1] += 0.1 #Correct direction?
+
+    return velocity
 
 class Entity():
     def __init__(self, sprite, size, center, gravity=True, collision=True):
@@ -44,13 +49,37 @@ class Entity():
         self.rect.center = self.center[0], self.center[1]
 
     def coreUpdate(self, entities):
-        #Apply gravity + check collisions
-        pass
+        if self.gravity:
+            self.velocity = applyGravity(self.velocity, self.gravity)
 
-    def draw(self, offset, screen):
-        #Draw the entity (offset)
-        pass
+        self.pos[0] += self.velocity[0]
+        self.pos[1] += self.velocity[1]
+        self.updateRect()
+        #Here be collisions
+
+    def draw(self, screen, offset=[0, 0]):
+        #Blit a sprite here
+        self.rect.centerx += offset[0]
+        self.rect.centery += offset[1]
+        pg.draw.rect(screen, (0, 255, 0), self.rect)
+        self.rect.centerx -= offset[0]
+        self.rect.centery -= offset[1]
+
+    def collides(self, entities):
+        for e in entities:
+            if e.rect != self.rect and e.rect.colliderect(self.rect):
+                return True
+
 
     def onGround(self, entities):
         #Checks if the entity is on the ground (or any entity), return true or false
-        pass
+        r = False
+        self.pos[1] += 1
+        self.updateRect()
+        if self.collides(entities):
+            r = True
+
+        self.pos[1] -= 1
+        self.updateRect()
+
+        return r
