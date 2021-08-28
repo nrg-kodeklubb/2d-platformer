@@ -35,5 +35,5 @@ class GameManager():
 
     def update(self):
         #Runs all update methods
-        pass
+        self.levels[self.currentLevel].update(self.keys)
 

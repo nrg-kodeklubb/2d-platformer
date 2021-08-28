@@ -25,9 +25,9 @@ def blitRotImg(image, rect, surface, offset=[0, 0], angle=0):
 
     surface.blit(rot_sprite, rect)
 
-def applyGravity(velocity, isOnGround):
-    if not isOnGround and terminalVelocity < 10: #Terminal velocity
-        velocity[1] += 0.1 #Correct direction?
+def applyGravity(velocity):
+    if velocity[1] < terminalVelocity: #Terminal velocity
+        velocity[1] += 0.5 #Correct direction?
 
     return velocity
 
@@ -40,6 +40,7 @@ class Entity():
         self.gravity = gravity
         self.collision = collision
         self.updateRect()
+        self.isOnGround = False
 
     def __repr__(self):
         return 'Entity traveling at ' + str(self.velocity) + '  Center at ' + str(self.center)
@@ -49,37 +50,45 @@ class Entity():
         self.rect.center = self.center[0], self.center[1]
 
     def coreUpdate(self, entities):
-        if self.gravity:
-            self.velocity = applyGravity(self.velocity, self.gravity)
+        if self.gravity and not self.isOnGround:
+            self.velocity = applyGravity(self.velocity)
 
-        self.pos[0] += self.velocity[0]
-        self.pos[1] += self.velocity[1]
+        elif self.isOnGround and self.velocity[1] > 0:
+            self.velocity[1] = 0
+
+        self.center[0] += self.velocity[0]
+        self.center[1] += self.velocity[1]
         self.updateRect()
-        #Here be collisions
+        #if self.collision:
+         #   pass
+            #Here be collisions
+
 
     def draw(self, screen, offset=[0, 0]):
         #Blit a sprite here
         self.rect.centerx += offset[0]
         self.rect.centery += offset[1]
-        pg.draw.rect(screen, (0, 255, 0), self.rect)
+        pg.draw.rect(screen, (255, 0, 255), self.rect)
         self.rect.centerx -= offset[0]
         self.rect.centery -= offset[1]
 
     def collides(self, entities):
         for e in entities:
-            if e.rect != self.rect and e.rect.colliderect(self.rect):
+            if self.rect.colliderect(e) and e != self.rect:
+            #Temporary, should be what is below
+            #if e.rect.colliderect(self.rect) and e.rect != self.rect:
                 return True
 
 
-    def onGround(self, entities):
+        return False
+
+
+    def updateGround(self, entities):
         #Checks if the entity is on the ground (or any entity), return true or false
-        r = False
-        self.pos[1] += 1
-        self.updateRect()
-        if self.collides(entities):
-            r = True
-
-        self.pos[1] -= 1
+        self.center[1] += 1
         self.updateRect()
 
-        return r
+        self.isOnGround = self.collides(entities)
+
+        self.center[1] -= 1
+        self.updateRect()

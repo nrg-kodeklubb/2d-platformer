@@ -1,5 +1,6 @@
 #The level manager, containing class of levels, functions for loading levels
 import pygame as pg
+import copy
 
 def loadLevel(path):
     file = open(path, 'r')
@@ -35,7 +36,34 @@ class Level():
         return len(self.tiles)
 
     def draw(self, screen):
+        #Hva søren er dette? Du starter med x. X aksen er ALLTID førstekoordinat!
         for y in range(self.height()):
             for x in range(self.width()):
                 if self.tiles[y][x] == 1:
                     pg.draw.rect(screen, (0, 255, 0), (x*block_size, y*block_size, block_size, block_size))
+
+        for e in self.entities:
+            e.draw(screen)
+
+    def getSuroundingTiles(self, centerPos, radius=2):
+        centerPos[0] = int(centerPos[0]/block_size)
+        centerPos[1] = int(centerPos[1]/block_size)
+        r = []
+        for x in range(-radius, radius):
+            for y in range(-radius, radius):
+                #Quite temporary code here, generating rects
+                try:
+                    if self.tiles[x+centerPos[1]][y+centerPos[0]] == 1:
+                        rect = pg.Rect(1, 1, block_size, block_size)
+                        rect.topleft = (y+centerPos[0])*block_size, (x+centerPos[1])*block_size
+                        r += [rect] #A better append
+
+                except IndexError:
+                    pass #If the surrounding tiles are out of bounds
+
+        return r
+
+    def update(self, keys):
+        ##Figure out relevant entities here
+        for e in self.entities:
+            e.update(self.getSuroundingTiles(copy.deepcopy(e.center)), keys)
