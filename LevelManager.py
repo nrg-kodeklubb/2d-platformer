@@ -40,22 +40,24 @@ class Level():
         for y in range(self.height()):
             for x in range(self.width()):
                 if self.tiles[y][x] == 1:
-                    pg.draw.rect(screen, (0, 255, 0), (x*block_size, y*block_size, block_size, block_size))
+                    rect = pg.Rect(1, 1, block_size, block_size)
+                    rect.center = x*block_size, y*block_size
+                    pg.draw.rect(screen, (0, 255, 0), rect)
 
         for e in self.entities:
             e.draw(screen)
 
-    def getSuroundingTiles(self, centerPos, radius=2):
+    def getSuroundingTiles(self, centerPos, radius=3):
         centerPos[0] = int(centerPos[0]/block_size)
         centerPos[1] = int(centerPos[1]/block_size)
         r = []
-        for x in range(-radius, radius):
-            for y in range(-radius, radius):
+        for x in range(-radius, radius+1):
+            for y in range(-radius, radius+1):
                 #Quite temporary code here, generating rects
                 try:
                     if self.tiles[x+centerPos[1]][y+centerPos[0]] == 1:
                         rect = pg.Rect(1, 1, block_size, block_size)
-                        rect.topleft = (y+centerPos[0])*block_size, (x+centerPos[1])*block_size
+                        rect.center = (y+centerPos[0])*block_size, (x+centerPos[1])*block_size
                         r += [rect] #A better append
 
                 except IndexError:
