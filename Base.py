@@ -97,7 +97,7 @@ class Entity():
     def collides(self, entities):
         self.updateRect()
         for e in entities:
-            if self.rect.colliderect(e) and e != self.rect:
+            if self.rect.colliderect(e.rect) and e.rect != self.rect:
             #Temporary, should be what is below
             #if e.rect.colliderect(self.rect) and e.rect != self.rect:
                 return True, e

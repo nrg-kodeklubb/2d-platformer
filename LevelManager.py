@@ -1,6 +1,7 @@
 #The level manager, containing class of levels, functions for loading levels
 import pygame as pg
 import copy
+from Platform import Platform
 
 def loadLevel(path):
     file = open(path, 'r')
@@ -27,6 +28,13 @@ block_size = 16
 class Level():
     def __init__(self, tiles, entities):
         self.tiles = tiles
+        for y in range(self.height()):
+            for x in range(self.width()):
+                if self.tiles[y][x] == 1:
+                    self.tiles[y][x] = Platform((x*block_size, y*block_size), (block_size, block_size))
+                else:
+                    self.tiles[y][x] = 0 #If it is not full, is is empty
+
         self.entities = entities #Spiller er alltid entity 0
 
     def width(self):
@@ -39,10 +47,8 @@ class Level():
         #Hva søren er dette? Du starter med x. X aksen er ALLTID førstekoordinat!
         for y in range(self.height()):
             for x in range(self.width()):
-                if self.tiles[y][x] == 1:
-                    rect = pg.Rect(1, 1, block_size, block_size)
-                    rect.center = x*block_size+offset[0], y*block_size+offset[1]
-                    pg.draw.rect(screen, (0, 255, 0), rect)
+                if self.tiles[y][x] != 0:
+                    self.tiles[y][x].draw(screen, offset)
 
         for e in self.entities:
             e.draw(screen, offset)
@@ -55,10 +61,8 @@ class Level():
             for y in range(-radius, radius+1):
                 #Quite temporary code here, generating rects
                 try:
-                    if self.tiles[x+centerPos[1]][y+centerPos[0]] == 1:
-                        rect = pg.Rect(1, 1, block_size, block_size)
-                        rect.center = (y+centerPos[0])*block_size, (x+centerPos[1])*block_size
-                        r += [rect] #A better append
+                    if self.tiles[x+centerPos[1]][y+centerPos[0]] != 0: #Not empty
+                        r += [self.tiles[x+centerPos[1]][y+centerPos[0]]] #A better append
 
                 except IndexError:
                     pass #If the surrounding tiles are out of bounds
@@ -69,3 +73,8 @@ class Level():
         ##Figure out relevant entities here
         for e in self.entities:
             e.update(self.getSuroundingTiles(copy.deepcopy(e.center)), keys)
+
+        for y in range(self.height()):
+            for x in range(self.width()):
+                if self.tiles[y][x] != 0:
+                    self.tiles[y][x].update()
