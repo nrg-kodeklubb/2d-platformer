@@ -2,6 +2,9 @@
 
 from pygame.locals import *
 import pygame as pg
+import copy
+
+cameraCenter = [1250/2, 680/2]
 
 class GameManager():
     def __init__(self, layouts, player, levels, currentLevel=0, currentLayout=0):
@@ -29,8 +32,12 @@ class GameManager():
 
     def draw(self, screen):
         #Has to draw everything here
-        self.levels[self.currentLevel].draw(screen)
-        #self.player.draw()
+
+        playerPos = copy.deepcopy(self.levels[self.currentLevel].entities[0].center)
+        offSet = [-playerPos[0]+cameraCenter[0], -playerPos[1]+cameraCenter[1]]
+
+        self.levels[self.currentLevel].draw(screen, offSet)
+
         #self.layouts[self.currentLayout].draw()
 
     def update(self):

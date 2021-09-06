@@ -27,7 +27,7 @@ block_size = 16
 class Level():
     def __init__(self, tiles, entities):
         self.tiles = tiles
-        self.entities = entities
+        self.entities = entities #Spiller er alltid entity 0
 
     def width(self):
         return len(self.tiles[0])
@@ -35,17 +35,17 @@ class Level():
     def height(self):
         return len(self.tiles)
 
-    def draw(self, screen):
+    def draw(self, screen, offset=[0, 0]):
         #Hva søren er dette? Du starter med x. X aksen er ALLTID førstekoordinat!
         for y in range(self.height()):
             for x in range(self.width()):
                 if self.tiles[y][x] == 1:
                     rect = pg.Rect(1, 1, block_size, block_size)
-                    rect.center = x*block_size, y*block_size
+                    rect.center = x*block_size+offset[0], y*block_size+offset[1]
                     pg.draw.rect(screen, (0, 255, 0), rect)
 
         for e in self.entities:
-            e.draw(screen)
+            e.draw(screen, offset)
 
     def getSuroundingTiles(self, centerPos, radius=3):
         centerPos[0] = int(centerPos[0]/block_size)
