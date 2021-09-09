@@ -36,10 +36,10 @@ class Button():
         except:
             raise Exception('Not a valid shape object')
 
-    def collide(self, point):
+    def collide(self, point, GM):
         if self.isactive:
             if self.shape.collide(point):
-                self.func(self.params)
+                self.func(GM, self.params)
 
     def draw(self):
         if self.isactive:
@@ -293,12 +293,12 @@ class TextBox():
         self.descs += [self.font.render(' '.join(remaining), True, self.color)]
 
 class Layout():
-    def __init__(self, buttons=[], textBoxes=[], shapes=[], selectors=[], bars=[]):
-        self.buttons = buttons
-        self.textBoxes = textBoxes
-        self.shapes = shapes
-        self.selectors = selectors
-        self.bars = bars
+    def __init__(self):
+        self.buttons = []
+        self.textBoxes = []
+        self.shapes = []
+        self.selectors = []
+        self.bars = []
 
     def draw(self):
         if self.checkSurface():
@@ -310,8 +310,8 @@ class Layout():
         else:
             raise Exception('Some elements have undeffined surfaces. Set a surface for all elements in this layout by using the setSurface(surface) method of the layout object')
 
-    def collide(self, pos):
-        [button.collide(pos) for button in self.buttons]
+    def collide(self, pos, GM):
+        [button.collide(pos, GM) for button in self.buttons]
         [selector.collide(pos) for selector in self.selectors]
         [bar.collide(pos) for bar in self.bars]
 

@@ -38,9 +38,13 @@ class GameManager():
 
         self.levels[self.currentLevel].draw(screen, offSet)
 
-        #self.layouts[self.currentLayout].draw()
+        self.layouts[self.currentLayout].draw()
 
     def update(self):
         #Runs all update methods
         self.levels[self.currentLevel].update(self.keys)
+
+    def updateClick(self):
+        #Runs updates for a click
+        self.layouts[self.currentLayout].collide(pg.mouse.get_pos(), self)
 

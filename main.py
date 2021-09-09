@@ -1,6 +1,7 @@
 from pysimpleGUI import *
 from gameManager import *
 from LevelManager import *
+from GUI import *
 from Player import Player
 import sys
 import pygame as pg
@@ -17,7 +18,8 @@ pg.display.set_caption('2D platformer')
 level1 = loadLevel('levels/level1.txt')
 Player = Player(None, [32, 64], [200, 400], gravity=True, collision=True)
 level1.entities += [Player]
-GM = GameManager([], None, [level1], 0)
+
+GM = GameManager(getGUIs(WS), None, [level1], 0)
 
 FPS = 30
 
@@ -34,6 +36,9 @@ while True:
 
         if event.type == KEYUP:
             GM.keyup(event.key)
+
+        if event.type == MOUSEBUTTONDOWN:
+            GM.updateClick()
 
     GM.update()
 
